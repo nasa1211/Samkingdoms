@@ -1,0 +1,211 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Assets/Scripts/StorageManager.cs",
+			"settings":
+			{
+				"buffer_size": 2969,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Unity3D Build System/Unity.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"p",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 674.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/kimjh/Documents/UnityProject/Samkingdom/Assets/Scripts/StorageManager.cs",
+		"/Users/kimjh/Documents/UnityProject/Samkingdom/Assets/Scripts/ShopManager.cs",
+		"/Users/kimjh/Downloads/Package Control.sublime-package",
+		"/Users/kimjh/Library/Logs/MonoDevelop-5.0/Ide.2015-06-22__15-49-39.log",
+		"/Users/kimjh/Library/Logs/MonoDevelop-5.0/Ide.log",
+		"/Users/kimjh/Project_PNF/Equilnote/Equilnote/ViewController.m",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/RecipeViewController.h",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/RecipeViewController.m",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/ReportTableCell.h",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/ReportTableCell.m",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/ReportTableCell.xib",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/ReportViewController.h",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/ReportViewController.m",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/SuggestMenuViewController.h",
+		"/Users/kimjh/Project_ds/genoplan_ios_app/GenoplanApp/Classes/Main/Report/SuggestMenuViewController.m",
+		"/Users/kimjh/MyProject/PodTest/Podfile",
+		"/Users/kimjh/MyProject/PodTest/Podfile.lock",
+		"/Users/kimjh/MyProject/TestPJ/Podfile",
+		"/Users/kimjh/Downloads/test pj/ios-linechart-master/ios-linechart/ios-linechart-Info.plist",
+		"/Users/kimjh/Downloads/test pj/ios-linechart-master/ios-linechart.podspec",
+		"/Users/kimjh/Downloads/res/TexturePacker Asset/000.mainmenu/New/Untitled.json",
+		"/Users/kimjh/Documents/dialoguespace/ReelQuest-master-20150107/Assets/Scripts/RQNet/RQWebLoader.cs",
+		"/Users/kimjh/Documents/dialoguespace/ReelQuest-master-20150107/Assets/Scripts/RQCommon/RQCommon.cs",
+		"/Users/kimjh/Documents/dialoguespace/ReelQuest-master-20150107/Assets/NGUI/Scripts/UI/UI2DSprite.cs"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"soldier-run_",
+			"animations",
+			"AddPage",
+			"NSTimer scheduledTimerWithTimeInterval",
+			"hideAllSubMenuViewMain",
+			"performSelectorOnMainThread",
+			"thread",
+			"timer",
+			"HttpRequestDelegate",
+			"_domainServer"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Assets/Scripts/StorageManager.cs",
+					"settings":
+					{
+						"buffer_size": 2969,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2150,
+								2150
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C#/C#.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 686.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 250.0,
+	"status_bar_visible": true
+}
