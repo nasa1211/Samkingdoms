@@ -8,10 +8,10 @@
 	"buffers":
 	[
 		{
-			"file": "Assets/Scripts/StorageManager.cs",
+			"file": "/Users/kimjh/Documents/UnityProject/SpineTest/Assets/Scripts/SoldierMenu.cs",
 			"settings":
 			{
-				"buffer_size": 2969,
+				"buffer_size": 1284,
 				"line_ending": "Unix"
 			}
 		}
@@ -44,8 +44,11 @@
 	},
 	"file_history":
 	[
-		"/Users/kimjh/Documents/UnityProject/Samkingdom/Assets/Scripts/StorageManager.cs",
+		"/Users/kimjh/Documents/UnityProject/SpineTest/Assets/Scripts/SoldierController.cs",
+		"/Users/kimjh/Documents/UnityProject/SpineTest/Assets/Scripts/SoldierSpawner.cs",
 		"/Users/kimjh/Documents/UnityProject/Samkingdom/Assets/Scripts/ShopManager.cs",
+		"/Users/kimjh/Documents/UnityProject/Samkingdom/Assets/Scripts/StorageManager.cs",
+		"/Applications/Unity/MonoDevelop.app/Contents/MacOS/share/mime/packages/monodevelop.xml",
 		"/Users/kimjh/Downloads/Package Control.sublime-package",
 		"/Users/kimjh/Library/Logs/MonoDevelop-5.0/Ide.2015-06-22__15-49-39.log",
 		"/Users/kimjh/Library/Logs/MonoDevelop-5.0/Ide.log",
@@ -118,18 +121,18 @@
 			[
 				{
 					"buffer": 0,
-					"file": "Assets/Scripts/StorageManager.cs",
+					"file": "/Users/kimjh/Documents/UnityProject/SpineTest/Assets/Scripts/SoldierMenu.cs",
 					"settings":
 					{
-						"buffer_size": 2969,
+						"buffer_size": 1284,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2150,
-								2150
+								129,
+								129
 							]
 						],
 						"settings":
@@ -138,7 +141,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 686.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -179,7 +182,7 @@
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 100.0
+		"height": 240.0
 	},
 	"replace":
 	{

@@ -25,13 +25,13 @@ public class MenuManager : MonoBehaviour {
 					SKCommon.m_MainManager.setMainState(StateMain.TAVERN);
 				}
 				else if(_btn.name.Equals("_Btn3")){
-					SKCommon.m_MainManager.setMainState(StateMain.BARRACKS);
+					SKCommon.m_MainManager.setMainState(StateMain.ACADEMY);
 				}
 				else if(_btn.name.Equals("_Btn4")){
 					SKCommon.m_MainManager.setMainState(StateMain.STORAGE);
 				}
 				else if(_btn.name.Equals("_Btn5")){
-					SKCommon.m_MainManager.setMainState(StateMain.ACADEMY);
+//					SKCommon.m_MainManager.setMainState(StateMain.ACADEMY);
 				}
 				else if(_btn.name.Equals("_Btn6")){
 					SKCommon.m_MainManager.setMainState(StateMain.SHOP);

@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - popupController
+  - BgLayer
   layers:
   - Default
   - TransparentFX
@@ -15,7 +15,7 @@ TagManager:
   - 
   - 
   - main_menu
-  - 
+  - Player
   - 
   - 
   - 
