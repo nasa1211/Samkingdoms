@@ -9,6 +9,7 @@ public class General : MonoBehaviour {
 	public bool soldierTargetCheck = false;
 	public PlayerPosition generalPosition;
 	public int index;
+	public bool direct = false; 
 
 	void Awake(){
 	}
@@ -17,6 +18,22 @@ public class General : MonoBehaviour {
 	void OnEnable(){
 	}
 	void Update(){
+
+		if(this.name.Equals("Hero_15")){
+//			Vector3 direction = (target.position - transform.position).normalized;
+//			Vector3 v3tmp = direction * (Time.deltaTime * moveSpeed);
+//			
+//			v3tmp = this.transform.position + v3tmp;
+//			
+//			float now = Vector3.Distance(v3tmp, this.transform.position);
+//			float dest = Vector3.Distance(this.transform.position, getTarget().position);
+
+
+//			General tg = target.GetComponent<General>();
+//			float targetRange = Vector3.Distance(this.soldierObj[0].transform.position, tg.soldierObj[0].transform.position);
+//			Debug.Log("targetRange================> "+targetRange);
+		}
+
 	}
 
 	public void setTarget(General _target){
@@ -37,17 +54,26 @@ public class General : MonoBehaviour {
 		return null;
 	}
 
-	public Player getNearingSoldier(Player soldier){
+	public Player getNearingSoldier(Player soldier, bool first){
 		if(this.target == null || soldier == null)
 			return null;
 
 		float tmpDist = 0, saveDist = 10000;
 		Player nearPlayer = null;
-		foreach(Player _p in soldierObj){
-//			if(_p.currentState == PlayerState.SearchSoldier || _p.currentState == PlayerState.None)
+		bool check = false;
+		foreach(Player _p in soldierObj)
+		{
+			if(first){
+				check = (_p.currentState == PlayerState.SearchSoldier && _p.targetObjPools.Count < 2) ? true : false;
+			}
+			else {
+				check = true;
+			}
+
+			if(check)
 			{
 				tmpDist = Vector3.Distance(_p.transform.position, soldier.transform.position);
-				if(tmpDist < saveDist && _p.targetObjPools.Count < 2){
+				if(tmpDist < saveDist){
 					saveDist = tmpDist;
 					nearPlayer = _p;
 				}
@@ -137,8 +163,21 @@ public class General : MonoBehaviour {
 				else{
 					//Waiting Soldier
 					//_p.setPlayerState(PlayerState.None);
-					_p.setPlayerState(PlayerState.SearchSoldier);
+					//_p.setPlayerState(PlayerState.SearchSoldier);
 //					Debug.Log("SSSSSSSSSS :::   "+_p.name);
+
+					//타겟이 없을 경우 가까운 타겟을 설정.
+					int idx = Random.Range(0, getTargetGeneral().soldierObj.Count);
+					Player _tt = getTargetGeneral().soldierObj[idx];
+
+//					Player _tt = getTargetGeneral().getNearingSoldier(_p, false);
+					_p.setTargetObj(_tt);
+					_p.setTargetRange();
+
+					int rand = Random.Range(0, 2);
+					_p.targetPassMove = (rand == 0) ? true : false ;
+
+					_tt.setTargetObj(_p);
 				}
 			}
 		}

@@ -42,43 +42,68 @@ public class InGameManager : MonoBehaviour {
 	public GameObject posiEmptyOpj;
 
 	Dictionary<int, int> positionToAmountHeros = new Dictionary<int, int> {
-		{0,25},{1,25},{2,25},{3,25},
-		{4,25},{5,25},{6,25},{7,25},
-		{8,25},{9,25},{10,25},{11,25},
-		{12,25},{13,25},{14,25},{15,25},
-		{16,25},{17,25},{18,25},{19,25},
-		{20,25},{21,25},{22,25},{23,25},
-		{24,25},{25,25},{26,25},{27,25}
+//		{0,25},{1,25},{2,25},{3,25},
+//		{4,25},{5,25},{6,25},{7,25},
+//		{8,25},{9,25},{10,25},{11,25},
+//		{12,25},{13,25},{14,25},{15,25},
+//		{16,25},{17,25},{18,25},{19,25},
+//		{20,25},{21,25},{22,25},{23,25},
+//		{24,25},{25,25},{26,25},{27,25}
 
 //		{11,25},{15,25},{19,25},
 //		{11,25},{15,10}
 //		{15,25}
 //		{11,25},{15,25}
-//		{15,25}
+		{15,0}
 
 //		{10,25},{11,25},
 //		{14,25},{15,25},
 //		{18,25},{19,25},
 
+//		{3,12},
+//		{7,12},
+//		{11,12},
+//		{15,12},
+//		{19,12},
+//		{23,12},
+//		{27,12}
+
 	};
 	Dictionary<int, int> positionToAmountEnemys = new Dictionary<int, int> {
-		{0,25},{1,25},{2,25},{3,25},
-		{4,25},{5,25},{6,25},{7,25},
-		{8,25},{9,25},{10,25},{11,25},
-		{12,25},{13,25},{14,25},{15,25},
-		{16,25},{17,25},{18,25},{19,25},
-		{20,25},{21,25},{22,25},{23,25},
-		{24,25},{25,25},{26,25},{27,25}
+//		{0,25},{1,25},{2,25},{3,25},
+//		{4,25},{5,25},{6,25},{7,25},
+//		{8,25},{9,25},{10,25},{11,25},
+//		{12,25},{13,25},{14,25},{15,25},
+//		{16,25},{17,25},{18,25},{19,25},
+//		{20,25},{21,25},{22,25},{23,25},
+//		{24,25},{25,25},{26,25},{27,25}
 
 //		{11,25},{15,25},{19,25},
 //		{11,10},{15,25}
 //		{15,25}
 //		{11,25},{15,25}
-//		{15,25}
+		{15,0}
 
 //		{10,25},{11,25},
 //		{14,25},{15,25},
 //		{18,25},{19,25},
+
+//		{3,12},
+//		{7,12},
+//		{11,12},
+////		{15,12},
+//		{19,12},
+//		{23,12},
+//		{27,12}
+
+
+//		{3,10},
+////		{7,25},
+//		{11,25},
+////		{15,25},
+//		{19,10},
+//		{23,0},
+//		{27,25}
 
 	};
 
@@ -123,51 +148,145 @@ public class InGameManager : MonoBehaviour {
 		CreateGeneralObject(PlayerPosition.Hero, HeroObjPoolPosition);
 		CreateGeneralObject(PlayerPosition.Enemy, HeroObjPoolPosition);
 
-//		int[,] nums = new int[3,2]{{9,99},{3,33},{5,55}};
-//		foreach (int idx in nums) {
-//			Debug.Log("---> "+idx+", "+nums.GetLength(1));
-//		}
+		settingGeneralTarget();
 
-		if(gameGeneralPools.ContainsKey(PlayerPosition.Hero)){
-			foreach(General _g in gameGeneralPools[PlayerPosition.Hero]){
-				for(int i=0;i<gArray.GetLength(0);i++){
-					for(int j=0;j<gArray.GetLength(1);j++){
-						Debug.Log("arr["+i+"]["+j+"] = "+gArray[i, j]);
+		//check target General
+		//setGeneralTarget();
+
+		//game start
+		Invoke("gameStart", 3f);
+	}	
+
+	void settingGeneralTarget()
+	{
+		PlayerPosition searchArr, targetArr;
+
+		for(int position=0;position<2;position++)
+		{
+			searchArr = (position == 0) ? PlayerPosition.Hero : PlayerPosition.Enemy;
+			targetArr = (position == 0) ? PlayerPosition.Enemy : PlayerPosition.Hero;
+
+			foreach(General _g in gameGeneralPools[searchArr])
+			{
+				//my lline search
+				int myline = getGeneralLine(_g.index);
+				if(myline > -1)
+				{
+					int tidx = getGeneralTargetLine(targetArr, myline);
+					if(tidx > -1)
+					{
+						Debug.Log("OK 같은 라인 부대 체크!! ("+myline+" == "+tidx+")");
+						List<General> _list = new List<General>();
+						foreach(General tg in gameGeneralPools[targetArr])
+						{
+							for(int i=0;i<4;i++)
+							{
+								if(gArray[myline, i] == tg.index)
+								{
+									_list.Add(tg);
+								}
+							}
+						}
+						Debug.Log(_list.Count);
+						
+						if(_list.Count > 0)
+						{
+							_g.target = getNearingGeneral(_g, _list).transform;
+						}
+						else{
+//							_g.target = null;
+						}
+						
+					}
+					else{
+						Debug.Log("NOT 같은 라인 부대 체크!! ("+myline+" == "+tidx+")");
+//						_g.target = getNearingGeneral(_g, gameGeneralPools[targetArr]).transform;
+//						_g.direct = true;
+//
+//						//soldier target setting
+//						_g.soldiersTargetSettings();
 					}
 				}
+			}//foreach
+		}//for
+	}
+
+#if true
+	int getGeneralLine(int index){
+		for(int i=0;i<gArray.GetLength(0);i++){
+			for(int j=0;j<gArray.GetLength(1);j++){
+				if(gArray[i, j] == index)
+					return i;
 			}
 		}
-		if(gameGeneralPools.ContainsKey(PlayerPosition.Enemy)){
-			Debug.Log("2222");
-		}
+		return -1;
+	}
 
-//		//check target General
-//		setGeneralTarget();
-//
-//		//game start
-//		Invoke("gameStart", 3f);
-	}			
-
-	void gameStart(){
-		foreach(PlayerPosition _k in gameGeneralPools.Keys){
-			foreach(General _g in gameGeneralPools[_k]){
-				if(_g.target == null)
-					continue;
-
-				foreach(Player _p in _g.soldierObj){
-					_p.setMoveStartDelay(Random.Range(0.01f, 0.05f));
+	int getGeneralTargetLine(PlayerPosition type, int index){
+		if(gameGeneralPools.ContainsKey(type)){
+			foreach(General _g in gameGeneralPools[type]){
+				int idx = getGeneralLine(_g.index); 
+				if(idx == index){
+//					Debug.Log("같은 라인 부대 체크 Ok!! ("+_g.index+")");
+					return idx;
+				}
+				else{
+//					Debug.Log("같은 라인 부대 체크 Not!! ("+_g.index+")");
 				}
 			}
 		}
+		return -1;
+	}
+#endif
 
-//		Player hero1 = GameObject.Find("Hero_15_0").GetComponent<Player>();
-//		Player hero2 = GameObject.Find("Enemy_15_0").GetComponent<Player>();
+	//같은 라인이 없을때 가까운 부대 찾기
+	//General getNearingGeneral(General tg, PlayerPosition type, List<General> array)
+	General getNearingGeneral(General tg, List<General> array)
+	{
+		float Dist = 0, saveDist = Mathf.Infinity;
+		General nearGeneral = null;
+		Debug.Log("################################ : name : "+tg.name);
+		//foreach(General _g in gameGeneralPools[type]){
+		foreach(General _g in array){
+//			tmpDist = Vector3.Distance(tg.transform.position, _g.transform.position);
+
+			Vector3 objectPos = _g.transform.position;
+			Dist = (objectPos - tg.transform.position).sqrMagnitude;
+//			tmpDist = (_g.soldierObj[0].transform.position-tg.soldierObj[0].transform.position).closestDistSqr;
+			Debug.Log(_g.name+ " => range--> "+Dist);
+			if(Dist < 10000f){
+				if(Dist < saveDist){
+					saveDist = Dist;
+					nearGeneral = _g;
+				}
+			}
+		}
+		return nearGeneral;
+	}
+
+	void gameStart(){
+//		foreach(PlayerPosition _k in gameGeneralPools.Keys){
+//			foreach(General _g in gameGeneralPools[_k]){
+//				//not target = not move
+////				if(_g.target == null)
+////					continue;
 //
-////		hero1.setTargetObj(hero2);
-//		hero2.setTargetObj(hero1);
-//		
-////		hero1.setPlayerState(PlayerState.Move_target);
-//		hero2.setPlayerState(PlayerState.Move_target);
+//				foreach(Player _p in _g.soldierObj){
+//					_p.setMoveStartDelay(Random.Range(0.01f, 0.05f), _g.direct);
+//				}
+//			}
+//		}
+
+		Player hero1 = GameObject.Find("Hero_15_0").GetComponent<Player>();
+		Player hero2 = GameObject.Find("Enemy_15_0").GetComponent<Player>();
+
+		hero1.setTargetObj(hero2);
+		hero2.setTargetObj(hero1);
+		
+//		hero1.setPlayerState(PlayerState.Move_target);
+
+		hero2.targetPassMove = true;
+		hero2.setPlayerState(PlayerState.Move_target);
 
 	}
 
@@ -249,6 +368,7 @@ public class InGameManager : MonoBehaviour {
 					temp = _tg;
 				}
 			}
+
 			if(check && temp != null)
 			{
 				general.target = temp.transform;
@@ -412,14 +532,17 @@ public class InGameManager : MonoBehaviour {
 		pp.startDelayTime = solideLine*Random.Range(0.1f, 0.12f);
 		pp.currentState = PlayerState.None;
 
-		pp.rangeSize = obj.transform.localScale.y * 2f;
+		CircleCollider2D c2t = pp.GetComponent<CircleCollider2D>();
+		pp.rangeSize = c2t.radius;// * 2f;
+
+//		pp.rangeSize = obj.transform.localScale.y * 2f;
 //		Debug.Log(this.name+", "+pp.rangeSize+" : "+obj.transform.localScale.y);
 
 
 //		float maxhp = Random.Range(0.5f, 2f);
 //		float maxhp = loadPrefabIndex==0?Random.Range(1f, 1.5f):Random.Range(1.1f, 1.4f);
-//		float maxhp = loadPrefabIndex==0? 10f : 0.3f;
-		float maxhp = pp.index==0? 3f : Random.Range(0.5f, 1f);
+		float maxhp = loadPrefabIndex==0? 50.0f : 10.0f;
+//		float maxhp = pp.index==0? 3f : Random.Range(0.5f, 1f);
 
 		pp.InitPlayer (maxhp,//maxHP
 		               //Random.Range(0.1f, 0.5f),
@@ -439,12 +562,15 @@ public class InGameManager : MonoBehaviour {
 //		gameSoldierPools.Add(pp.name, obj.GetComponent<Player>());
 	}
 
-	//void LateUpdate()
-	void FixedUpdate()
-	//void Update()
+	void LateUpdate()
 	{
-		if(nowGameState == GameState.idle){
-
+		renderingSortOrder();
+	}
+	//void FixedUpdate()
+	void Update()
+	{
+		if(nowGameState == GameState.idle)
+		{
 			for(int i=gameGeneralPools.Count-1;i>=0;i--)
 			{
 				List<General> gList = gameGeneralPools[i==0?PlayerPosition.Hero:PlayerPosition.Enemy];
@@ -458,9 +584,11 @@ public class InGameManager : MonoBehaviour {
 						if(nowGameState == GameState.idle)
 						{
 							//================================================//
-							for(int _c=_p.targetObjPools.Count-1;_c>=0;_c--){
+							for(int _c=_p.targetObjPools.Count-1;_c>=0;_c--)
+							{
 								Player _tmp = _p.targetObjPools[_c];
-								if(_tmp == null){
+								if(_tmp == null)
+								{
 									Debug.Log("Missing !!!@!@! Delete!!!   :  _p.targetObjPools["+_c+"]");
 									_p.targetObjPools.RemoveAt(_c);
 								}
@@ -472,23 +600,28 @@ public class InGameManager : MonoBehaviour {
 
 							if(_p.currentState == PlayerState.Move_target)
 							{
-								if(_p.targetObjPools.Count == 0 && _p.aniState != PlayerAnimation.IDLE){
+								if(_p.targetObjPools.Count == 0 && _p.aniState != PlayerAnimation.IDLE)
+								{
 									_p.setPlayerAnimation(PlayerAnimation.IDLE);
 									return;
 								}
 							}
 							else if(_p.currentState == PlayerState.SearchGeneral)
 							{
-								if(_g.getTargetGeneral() == null){
+								if(_g.getTargetGeneral() == null)
+								{
 									//Next General Search
 									Debug.Log("Next General Search");
 								}
-								else{
-									if(_g.getTargetGeneral().soldierObj.Count == 0){
+								else
+								{
+									if(_g.getTargetGeneral().soldierObj.Count == 0)
+									{
 										Destroy(_g.target.gameObject);
 										_g.target = null;
 									}
-									else{
+									else
+									{
 										Debug.Log("SearchGeneral : name : "+_p.name);
 //										Player nearPlayer = _g.getTargetGeneral().getNearingSoldier(_p);
 //										if(nearPlayer != null){
@@ -508,6 +641,7 @@ public class InGameManager : MonoBehaviour {
 							}
 							else if(_p.currentState == PlayerState.SearchSoldier)
 							{
+#if true
 								if(_p.aniState != PlayerAnimation.IDLE)
 									_p.setPlayerAnimation(PlayerAnimation.IDLE);
 
@@ -523,12 +657,16 @@ public class InGameManager : MonoBehaviour {
 								}
 								else
 								{
-									Player targetSoldier = _g.getTargetGeneral().getNearingSoldier(_p);
-									if(targetSoldier != null){
-
+									Player targetSoldier = _g.getTargetGeneral().getNearingSoldier(_p, false);
+									if(targetSoldier != null)
+									{
 										_p.setTargetObj(targetSoldier);
 										_p.setTargetRange();
 										_p.setPlayerState(PlayerState.Move_target);
+
+										int rand = Random.Range(0, 2);
+										_p.targetPassMove = (rand == 0) ? true : false ;
+
 
 										targetSoldier.setTargetObj(_p);
 
@@ -539,11 +677,12 @@ public class InGameManager : MonoBehaviour {
 
 									}
 								}
-
+#endif
 							}
 							else if(_p.currentState == PlayerState.Attack)
 							{
-								if(_p.targetObjPools.Count == 0){
+								if(_p.targetObjPools.Count == 0)
+								{
 									_p.setPlayerState(PlayerState.SearchSoldier);
 									return;
 								}
@@ -557,15 +696,21 @@ public class InGameManager : MonoBehaviour {
 									deadPlayer.targetObjPools.RemoveAt(0);
 
 									List<General> tmp;
-									if(_g.generalPosition == PlayerPosition.Hero){
+									if(_g.generalPosition == PlayerPosition.Hero)
+									{
 										tmp = gameGeneralPools[PlayerPosition.Enemy];
 									}
-									else{
+									else
+									{
 										tmp = gameGeneralPools[PlayerPosition.Hero];
 									}
-									foreach(General tg in tmp){
-										foreach(Player tp in tg.soldierObj){
-											if(deadPlayer == tp){
+
+									foreach(General tg in tmp)
+									{
+										foreach(Player tp in tg.soldierObj)
+										{
+											if(deadPlayer == tp)
+											{
 												Debug.Log(_p.name+" ==> 00 DELETE :: "+deadPlayer.name+" == "+tp.name);
 												tg.soldierObj.Remove(tp);
 												break;
@@ -574,7 +719,44 @@ public class InGameManager : MonoBehaviour {
 									}
 
 									_p.targetObjPools.RemoveAt(0);
-									_p.setPlayerState(PlayerState.SearchSoldier);
+//									_p.setPlayerState(PlayerState.SearchSoldier);
+
+									if(_p.targetObjPools.Count > 0)
+									{
+										if(_p.getTarget())
+										{
+											_p.setTargetRange();
+											_p.setPlayerState(PlayerState.Move_target);
+										}
+										else
+										{
+											_p.targetObjPools.RemoveAt(0);
+											_p.setPlayerState(PlayerState.SearchSoldier);
+										}
+									}
+									Debug.Log("00------------> "+_p.targetObjPools.Count);
+									if(_p.targetObjPools.Count == 1)
+									{
+										Player targetSoldier = _g.getTargetGeneral().getNearingSoldier(_p, false);
+										Debug.Log("11------------> "+targetSoldier);
+										if(targetSoldier != null)
+										{
+											targetSoldier.setTargetObj(_p);
+											targetSoldier.setTargetRange();
+											targetSoldier.setPlayerState(PlayerState.Move_target);
+											int rand = Random.Range(0, 2);
+											targetSoldier.targetPassMove = (rand == 0) ? true : false ;
+
+											_p.setTargetObj(targetSoldier);
+											
+											Debug.Log("New Target !!!! "+_p.name+", "+_p.currentState+" ==> "+targetSoldier.name+", "+targetSoldier.currentState);
+											
+											if(_p.targetObjPools.Count == 2 && _p.facingRight != targetSoldier.facingRight)
+												targetSoldier.targetPassMove = true;
+											
+										}
+									}
+
 								}
 							}
 							else if(_p.currentState == PlayerState.Dead)
@@ -1007,8 +1189,8 @@ public class InGameManager : MonoBehaviour {
 			//GameState Change
 			nowGameState = GameState.wait;
 
-			_g1.soldierStateChange(PlayerState.None);
-			_g2.soldierStateChange(PlayerState.None);
+			_g1.soldierStateChange(PlayerState.SearchSoldier);
+			_g2.soldierStateChange(PlayerState.SearchSoldier);
 
 			_g1.soldiersTargetSettings();
 			_g2.soldiersTargetSettings();

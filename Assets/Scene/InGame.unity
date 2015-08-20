@@ -31786,6 +31786,8 @@ MonoBehaviour:
   soldierObj: []
   soldierTargetCheck: 0
   generalPosition: 0
+  index: 0
+  direct: 0
 --- !u!1001 &909555828
 Prefab:
   m_ObjectHideFlags: 0

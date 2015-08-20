@@ -189,7 +189,8 @@ public class Player : MonoBehaviour, IDamageable {
 		}
 
 		if(getTarget()){
-			targetRange = Vector3.Distance(this.gameObject.transform.position, getTarget().position);
+			targetRange = Vector3.Distance(this.transform.position, getTarget().position);
+			Debug.Log(this.name+", range : "+targetRange);
 		}
 
 		PlayerAnimation _ani = checkAniState();
@@ -216,28 +217,26 @@ public class Player : MonoBehaviour, IDamageable {
 		return PlayerAnimation.IDLE;
 	}
 
+#if false
 	void OnTriggerEnter2D(Collider2D other)
 	{
-//		Debug.Log("0 Name:"+sKey+", idx :: "+index);
 		Player _target = other.gameObject.GetComponent<Player>();
-//		Debug.Log("0 KKK : "+this.sKey+" == "+_target.sKey);
 		if(soldierFlag == _target.soldierFlag)
 			return;
-//		Debug.Log("1 KKK : "+this.sKey+" == "+_target.sKey);
+
+		Debug.Log("OnTriggerEnter2D : "+this.name+", other : "+other.name);
+
 		if(targetPassMove){
 			if(_target.getTarget() != this.transform)
 				return;
 			else
 				targetPassMove = false;
 		}
-//		Debug.Log("2 KKK : "+this.sKey+" == "+_target.sKey);
 		if(currentState == PlayerState.Attack)
 			return;
-//		Debug.Log("3 KKK : "+this.sKey+" == "+_target.sKey);
 		if(getTarget() && getTarget() != other.transform){
 			return;
 		}
-//		Debug.Log("4 KKK : "+this.sKey+" == "+_target.sKey);
 		if(this.bFirst != _target.bFirst)
 			return;
 
@@ -317,7 +316,7 @@ public class Player : MonoBehaviour, IDamageable {
 			setPlayerState(PlayerState.Attack);
 		}
 	}
-
+#endif
 	void attackPlayer(){
 		if(targetPassMove){
 			Debug.Log("attackPlayer!!!!!!!!!!!!!!!!");
@@ -348,13 +347,20 @@ public class Player : MonoBehaviour, IDamageable {
 //		return check;
 	}
 
-	public void setMoveStartDelay(float delay)
+	public void setMoveStartDelay(float delay, bool direct)
 	{
-		Invoke("onMove", Random.Range(startDelayTime+(delay-0.1f), startDelayTime+(delay+0.1f)));
+//		if(direct)
+//			Invoke("onMoveTarget", Random.Range(startDelayTime+(delay-0.1f), startDelayTime+(delay+0.1f)));
+//		else
+			Invoke("onMove", Random.Range(startDelayTime+(delay-0.1f), startDelayTime+(delay+0.1f)));
 	}
 	void onMove()
 	{
 		setPlayerState(PlayerState.Move);
+	}
+	void onMoveTarget()
+	{
+		setPlayerState(PlayerState.Move_target);
 	}
 
 	public void setPlayerState(PlayerState _state)
@@ -412,96 +418,51 @@ public class Player : MonoBehaviour, IDamageable {
 			if(getTarget() == null)
 				return;
 
-			direction = (getTarget().position - transform.position).normalized;
-			Vector3 v3tmp = direction * (Time.deltaTime * moveSpeed);
+			Vector3  t_pos, v3tmp;
+			float now=0, dest=0, colSize=0;
+
+			if(targetPassMove)
+			{
+				float value = getTarget().GetComponent<Player>().rangeSize*2;
+				colSize = (facingRight) ? value : -value;
+			}
+
+			t_pos = new Vector3(getTarget().position.x+colSize, getTarget().position.y, getTarget().position.z);
+
+			direction = (t_pos - transform.position).normalized;
+			v3tmp = direction * (Time.deltaTime * moveSpeed);
 
 			v3tmp = this.transform.position + v3tmp;
 
-			float now = Vector3.Distance(v3tmp, this.transform.position);
-			float dest = Vector3.Distance(this.transform.position, getTarget().position);
-
-			Player tp = getTarget().GetComponent<Player>();
-
-//			if(tp.getTarget() != this.transform){
-//				targetPassMove = (tp.facingRight == this.facingRight) ? true : false;
-//			}
+			now = Vector3.Distance(v3tmp, this.transform.position);
+			dest = Vector3.Distance(this.transform.position, t_pos);
 
 			if(now >= dest){
-				if(targetPassMove){
-//					Debug.Log("moveTarget : "+now+" >= "+dest+", size : "+this.GetComponent<SpriteRenderer>().bounds.size.x);
-//
-//					bool bUp = false;
-//					if(this.transform.position.y < getTarget().position.y){
-//						bUp = true;
-//					}
 
-					float size = this.GetComponent<SpriteRenderer>().bounds.size.x / 2 ;
-					float sizeR = (this.facingRight) ? size : -size;
-//					Vector3 tmp = new Vector3(getTarget().position.x+sizeR, getTarget().position.y+(bUp?size:-size), getTarget().position.z);
-					Vector3 tmp = new Vector3(getTarget().position.x+sizeR, getTarget().position.y, getTarget().position.z);
-					this.transform.position = tmp;
-					setPlayerState(PlayerState.Attack);
-					targetPassMove = false;
-				}
+				targetPassMove = false;
+				setPlayerState(PlayerState.Attack);
+
+//				if(targetPassMove){
+////					Debug.Log("moveTarget : "+now+" >= "+dest+", size : "+this.GetComponent<SpriteRenderer>().bounds.size.x);
+////
+////					bool bUp = false;
+////					if(this.transform.position.y < getTarget().position.y){
+////						bUp = true;
+////					}
+//
+//					float size = this.GetComponent<SpriteRenderer>().bounds.size.x / 2 ;
+//					float sizeR = (this.facingRight) ? size : -size;
+////					Vector3 tmp = new Vector3(getTarget().position.x+sizeR, getTarget().position.y+(bUp?size:-size), getTarget().position.z);
+//					Vector3 tmp = new Vector3(getTarget().position.x+sizeR, getTarget().position.y, getTarget().position.z);
+//					this.transform.position = tmp;
+//					setPlayerState(PlayerState.Attack);
+//					targetPassMove = false;
+//				}
+
 			}
 			else{
 				this.transform.position = v3tmp;
 			}
-
-
-//			if(targetPassMove == false)
-//			{
-//				direction = (getTarget().position - transform.position).normalized;
-//				velocity =  (velocity + moveSpeed * Time.deltaTime);
-//				transform.position = new Vector3 (transform.position.x + (direction.x * velocity),
-//				                                  transform.position.y + (direction.y * velocity),
-//				                                  transform.position.z);
-//				velocity = 0.0f;
-//			}
-//			else{
-//				float move = (moveSpeed/2 * Time.deltaTime);
-//				this.transform.position = new Vector3(
-//					transform.position.x-(savePos.x * move),
-//					transform.position.y-(savePos.y * move),
-//					transform.position.z
-//					);
-//			}
-
-//			// Player의 위치와 이 객체의 위치를 빼고 단위 벡터화 한다.
-//			direction = (getTarget().position - transform.position).normalized;
-//			// 가속도 지정 (추후 힘과 질량, 거리 등 계산해서 수정할 것)
-//			//moveSpeed = 1.0f;
-//			// 초가 아닌 한 프레임으로 가속도 계산하여 속도 증가
-//			velocity =  (velocity + moveSpeed * Time.deltaTime);
-//#if true
-//			transform.position = new Vector3 (transform.position.x + (direction.x * velocity),
-//			                                  transform.position.y + (direction.y * velocity),
-//			                                  transform.position.z);
-//			velocity = 0.0f;
-//#else
-//			// Player와 객체 간의 거리 계산
-//			float distance = Vector3.Distance (target.position, transform.position);
-//			// 일정거리 안에 있을 시, 해당 방향으로 무빙
-//			if (distance <= 10.0f) {
-//				transform.position = new Vector3 (transform.position.x + (direction.x * velocity),
-//				                                  transform.position.y + (direction.y * velocity),
-//				                                  transform.position.z);
-//			}
-//			// 일정거리 밖에 있을 시, 속도 초기화 
-//			else {
-//				velocity = 0.0f;
-//			}
-//#endif
-
-////			velocity =  (velocity+(moveSpeed * Time.deltaTime));
-//			float move = (moveSpeed * Time.deltaTime);
-//
-//			this.transform.position = new Vector3(
-//				transform.position.x-(savePos.x * move),
-//				transform.position.y-(savePos.y * move),
-//				transform.position.z
-//				);
-//			velocity = 0.0f;
 
 		}
 		else
@@ -548,6 +509,8 @@ public class Player : MonoBehaviour, IDamageable {
 		savePos.x = transform.position.x - targetObjPools[0].transform.position.x;
 		savePos.y = transform.position.y - targetObjPools[0].transform.position.y;
 
+		Debug.Log("## setTargetRange x,y :  "+savePos.x+", "+savePos.y);
+
 //		savePos.x = transform.position.x - targetPos.x;
 //		savePos.y = transform.position.y - targetPos.y;
 	}
@@ -558,13 +521,9 @@ public class Player : MonoBehaviour, IDamageable {
 			return;
 
 		if(transform.position.x < getTarget().position.x && !facingRight){
-			if(this.name.Equals("Hero_15_0"))
-				Debug.Log("######## 00");
 			Flip();
 		}
 		else if(transform.position.x > getTarget().position.x && facingRight){
-			if(this.name.Equals("Hero_15_0"))
-				Debug.Log("######## 11");
 			Flip();
 		}
 	}
@@ -716,6 +675,19 @@ public class Player : MonoBehaviour, IDamageable {
 					Flip();
 				}
 			}
+
+
+#if true
+			//attack range check
+			CircleCollider2D c2t = getTarget().GetComponent<Player>().GetComponent<CircleCollider2D>();
+			float size = rangeSize+ c2t.radius;
+
+			if(targetRange > size){
+//				Debug.Log("#@#@#@#@#@#!!!! name : "+this.name);
+				setTargetRange();
+				setPlayerState(PlayerState.Move_target);
+			}
+#endif
 
 		}
 
